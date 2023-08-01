@@ -1,0 +1,2 @@
+CREATE DATABASE joy_of_painting IF NOT EXISTS;
+
