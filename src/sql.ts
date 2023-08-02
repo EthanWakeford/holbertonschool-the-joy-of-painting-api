@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const EpisodeModel = require('./models/Episode');
+const colorsUsedModel = require('./models/colorsUsed');
 const parseCsv = require('./parseCsv');
 // load .env file into env
 require('dotenv').config();
@@ -21,7 +21,7 @@ async function doStuff() {
   console.log('Connection has been established successfully.');
 
   // create model
-  const Episode = await EpisodeModel(sequelize);
+  const Episode = await colorsUsedModel(sequelize);
   console.log(Episode === sequelize.models.Episode);
 
   // sync model to DB
