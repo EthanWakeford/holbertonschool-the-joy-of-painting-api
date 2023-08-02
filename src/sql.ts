@@ -29,13 +29,15 @@ async function doStuff() {
 
   parseCsv('datasets/Colors_Used.csv')
     .then((data: any) => {
-      data.forEach((element: any) => {
-        element['id'] = element.index;
-        delete element.index;
-        delete element.colors;
-        delete element.color_hex;
+      data.forEach((row: any) => {
+        // sanitze data for db
+        row['id'] = row.index;
+        delete row.index;
+        delete row.colors;
+        delete row.color_hex;
       });
       console.log(data[0]);
+      // fill out table
       return Episode.bulkCreate(data);
     })
     .then((episodes: any) => {
