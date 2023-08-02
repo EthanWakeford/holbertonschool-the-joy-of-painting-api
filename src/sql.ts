@@ -21,13 +21,13 @@ async function doStuff() {
   console.log('Connection has been established successfully.');
 
   // create model
-  const Episode = await colorsUsedModel(sequelize);
-  console.log(Episode === sequelize.models.Episode);
+  const Color = await colorsUsedModel(sequelize);
+  console.log(Color === sequelize.models.Color);
 
   // sync model to DB
-  await Episode.sync({ force: true });
+  await Color.sync({ force: true });
 
-  parseCsv('datasets/Colors_Used.csv')
+  parseCsv('datasets/ColorsUsed.csv')
     .then((data: any) => {
       data.forEach((row: any) => {
         // sanitze data for db
@@ -38,12 +38,12 @@ async function doStuff() {
       });
       console.log(data[0]);
       // fill out table
-      return Episode.bulkCreate(data);
+      return Color.bulkCreate(data);
     })
-    .then((episodes: any) => {
-      console.log(episodes.length);
-      console.log(episodes[0] instanceof Episode);
-      console.log(episodes[0].id);
+    .then((colors: any) => {
+      console.log(colors.length);
+      console.log(colors[0] instanceof Color);
+      console.log(colors[0].id);
     });
 }
 

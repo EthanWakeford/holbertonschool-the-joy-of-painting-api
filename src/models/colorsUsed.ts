@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes } from 'sequelize';
 
 module.exports = async (sequelize: Sequelize) => {
-  const Episode = await sequelize.define('Episode', {
+  const Color = await sequelize.define('Color', {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -88,5 +88,5 @@ module.exports = async (sequelize: Sequelize) => {
     },
   });
 
-  return Episode;
+  return Color;
 };
