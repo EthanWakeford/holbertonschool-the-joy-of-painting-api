@@ -12,7 +12,7 @@ async function doStuff() {
     process.env.username,
     process.env.password,
     {
-      host: 'localhost',
+      host: process.env.host,
       dialect: 'mysql',
     }
   );
