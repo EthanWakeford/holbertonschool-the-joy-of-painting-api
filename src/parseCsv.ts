@@ -1,11 +1,25 @@
 const fs = require('fs');
 const { parse } = require('csv-parse');
 
-module.exports = async (path: string) => {
+type headerTransformer = (header: Array<string>) => Array<string>;
+
+/**
+ * read file from path and parse into array of key, value pairs
+ * @path {string}: path to file
+ * @headerTransformer {function}: transformer function to run on column names of CSV
+ */
+module.exports = async (path: string, headerTransformer: headerTransformer) => {
   return new Promise((resolve) => {
     const csvData: Array<object> = [];
     fs.createReadStream(path, { encoding: 'utf8' })
-      .pipe(parse({ columns: true }))
+      .pipe(
+        // take current header and run headerTransformer function on it to
+        // create desired columns for our db
+        parse({
+          columns: (header: Array<string>) => headerTransformer(header),
+          ignore_last_delimiters: true,
+        })
+      )
       .on('data', (row: any) => {
         csvData.push(row);
       })
