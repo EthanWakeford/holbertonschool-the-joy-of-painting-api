@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const colorsUsedModel = require('./models/colorsUsed');
 const episodeDateModel = require('./models/episodeDates');
+const SubjectMatterModel = require('./models/subjectMatter');
 const parseCsv = require('./parseCsv');
 // load .env file into env
 require('dotenv').config();
@@ -26,12 +27,17 @@ async function doStuff() {
   // console.log(Color === sequelize.models.Color);
 
   // create date model
-  const Date = await episodeDateModel(sequelize);
-  console.log(Date === sequelize.models.Date);
+  // const Date = await episodeDateModel(sequelize);
+  // console.log(Date === sequelize.models.Date);
+
+  // create subject model
+  const Subject = await SubjectMatterModel(sequelize);
+  console.log(Subject === sequelize.models.Subject);
 
   // sync models to DB
   // await Color.sync({ force: true });
-  await Date.sync({ force: true });
+  // await Date.sync({ force: true });
+  await Subject.sync({ force: true });
 
   // load colors used into DB
   // parseCsv('datasets/ColorsUsed.csv', (header: Array<string>) => header)
@@ -54,21 +60,34 @@ async function doStuff() {
   //   });
 
   // load episode dates in DB
-  parseCsv('datasets/Episode_Dates.csv', (header: Array<string>) => [
-    'title',
-    'episode_date',
-  ])
+  // parseCsv('datasets/Episode_Dates.csv', (header: Array<string>) => [
+  //   'title',
+  //   'episode_date',
+  // ])
+  //   .then((data: any) => {
+  //     data.forEach((row: any) => {
+  //       // sanitize date into proper form for mysql
+  //       row.episode_date = createMysqlDate(row.episode_date);
+  //     });
+  //     return Date.bulkCreate(data);
+  //   })
+  //   .then((dates: any) => {
+  //     console.log(dates[0]);
+  //     console.log(dates[0] instanceof Date);
+  //     console.log(dates[0].title);
+  //   });
+
+  // load subjects into DB
+  parseCsv('datasets/Subject_Matter.csv', (header: Array<string>) =>
+    header.map((col) => col.toLowerCase())
+  )
     .then((data: any) => {
-      data.forEach((row: any) => {
-        // sanitize date into proper form for mysql
-        row.episode_date = createMysqlDate(row.episode_date);
-      });
-      return Date.bulkCreate(data);
+      return Subject.bulkCreate(data);
     })
-    .then((dates: any) => {
-      console.log(dates[0]);
-      console.log(dates[0] instanceof Date);
-      console.log(dates[0].title);
+    .then((subjects: any) => {
+      console.log(subjects[0]);
+      console.log(subjects[0] instanceof Subject);
+      console.log(subjects[0].title);
     });
 }
 
