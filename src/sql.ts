@@ -15,6 +15,7 @@ async function doStuff() {
     {
       host: process.env.host,
       dialect: 'mysql',
+      logging: false,
     }
   );
 
@@ -23,24 +24,23 @@ async function doStuff() {
   console.log('Connection has been established successfully.');
 
   // create Color model
-  // const Color = await colorsUsedModel(sequelize);
-  // console.log(Color === sequelize.models.Color);
+  const Color = await colorsUsedModel(sequelize);
 
   // create date model
-  // const Date = await episodeDateModel(sequelize);
-  // console.log(Date === sequelize.models.Date);
+  const Date = await episodeDateModel(sequelize);
 
   // create subject model
   const Subject = await SubjectMatterModel(sequelize);
-  console.log(Subject === sequelize.models.Subject);
+
+  // Joins??????
+  const episodes = await Color.findAll({ include: Date });
+  console.log(episodes);
 
   // sync models to DB
-  // await Color.sync({ force: true });
-  // await Date.sync({ force: true });
-  await Subject.sync({ force: true });
+  // await sequelize.sync({ force: true });
 
   // load colors used into DB
-  // parseCsv('datasets/ColorsUsed.csv', (header: Array<string>) => header)
+  // parseCsv('datasets/Colors_Used.csv', (header: Array<string>) => header)
   //   .then((data: any) => {
   //     data.forEach((row: any) => {
   //       // sanitze data for db
@@ -49,21 +49,17 @@ async function doStuff() {
   //       delete row.colors;
   //       delete row.color_hex;
   //     });
-  //     console.log(data[0]);
   //     // fill out table
   //     return Color.bulkCreate(data);
   //   })
   //   .then((colors: any) => {
-  //     console.log(colors.length);
-  //     console.log(colors[0] instanceof Color);
-  //     console.log(colors[0].id);
+  //     // console.log(colors.length);
+  //     // console.log(colors[0] instanceof Color);
+  //     // console.log(colors[0].id);
   //   });
 
   // load episode dates in DB
-  // parseCsv('datasets/Episode_Dates.csv', (header: Array<string>) => [
-  //   'title',
-  //   'episode_date',
-  // ])
+  // parseCsv('datasets/Episode_Dates.csv', ['title', 'episode_date'])
   //   .then((data: any) => {
   //     data.forEach((row: any) => {
   //       // sanitize date into proper form for mysql
@@ -72,23 +68,25 @@ async function doStuff() {
   //     return Date.bulkCreate(data);
   //   })
   //   .then((dates: any) => {
-  //     console.log(dates[0]);
-  //     console.log(dates[0] instanceof Date);
-  //     console.log(dates[0].title);
+  //     // console.log(dates[0]);
+  //     // console.log(dates[0] instanceof Date);
+  //     // console.log(dates[0].title);
   //   });
 
-  // load subjects into DB
-  parseCsv('datasets/Subject_Matter.csv', (header: Array<string>) =>
-    header.map((col) => col.toLowerCase())
-  )
-    .then((data: any) => {
-      return Subject.bulkCreate(data);
-    })
-    .then((subjects: any) => {
-      console.log(subjects[0]);
-      console.log(subjects[0] instanceof Subject);
-      console.log(subjects[0].title);
-    });
+  // // load subjects into DB
+  // parseCsv('datasets/Subject_Matter.csv', (header: Array<string>) =>
+  //   header.map((col) => col.toLowerCase())
+  // )
+  //   .then((data: any) => {
+  //     return Subject.bulkCreate(data);
+  //   })
+  //   .then((subjects: any) => {
+  //     // console.log(subjects[0]);
+  //     // console.log(subjects[0] instanceof Subject);
+  //     // console.log(subjects[0].title);
+  //   });
+
+  console.log('done');
 }
 
 try {
