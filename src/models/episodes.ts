@@ -14,7 +14,7 @@ const episodesModel = async (sequelize: Sequelize) => {
     img_src: {
       type: DataTypes.STRING,
     },
-    painting_title: {
+    title: {
       type: DataTypes.STRING,
     },
     season: {

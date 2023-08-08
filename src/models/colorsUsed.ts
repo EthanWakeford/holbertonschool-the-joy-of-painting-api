@@ -18,67 +18,67 @@ const colorsUsedModel = async (sequelize: Sequelize) => {
       type: DataTypes.STRING,
     },
     season: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     episode: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     num_colors: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     youtube_src: {
       type: DataTypes.STRING,
     },
     Black_Gesso: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Bright_Red: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Burnt_Umber: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Cadmium_Yellow: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Dark_Sienna: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Indian_Red: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Indian_Yellow: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Liquid_Black: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Midnight_Black: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Phthalo_Blue: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Phthalo_Green: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Prussian_Blue: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Sap_Green: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Titanium_White: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Van_Dyke_Brown: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Yellow_Ochre: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
     Alizarin_Crimson: {
-      type: DataTypes.STRING,
+      type: DataTypes.BOOLEAN,
     },
   });
 
