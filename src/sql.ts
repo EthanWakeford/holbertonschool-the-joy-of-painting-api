@@ -1,7 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const colorsUsedModel = require('./models/colorsUsed');
 const episodeDateModel = require('./models/episodeDates');
-const SubjectMatterModel = require('./models/subjectMatter');
+const subjectMatterModel = require('./models/subjectMatter');
+const episodesModel = require('./models/episodes');
 const parseCsv = require('./parseCsv');
 // load .env file into env
 require('dotenv').config();
@@ -30,11 +31,41 @@ async function doStuff() {
   const Date = await episodeDateModel(sequelize);
 
   // create subject model
-  const Subject = await SubjectMatterModel(sequelize);
+  const Subject = await subjectMatterModel(sequelize);
+
+  // associations
+  Color.hasOne(Date, { foreignKey: 'id' });
+  Date.belongsTo(Color, { foreignKey: 'id' });
+
+  Date.hasOne(Subject, { foreignKey: 'id' });
+  Subject.belongsTo(Date, { foreignKey: 'id' });
 
   // Joins??????
-  const episodes = await Color.findAll({ include: Date });
-  console.log(episodes);
+  Color.findAll({
+    // where: { id: 1 },
+    // attributes: ['id', 'num_colors', 'Date.episode_date'],
+    include: [
+      {
+        model: Date,
+        required: true,
+        include: [
+          {
+            model: Subject,
+            required: true,
+          },
+        ],
+      },
+    ],
+  }).then((episodes: any) => {
+    // console.log(episodes[0].dataValues);
+    console.log(episodes[0].dataValues.Date.dataValues.Subject.dataValues)
+  });
+
+  // const f = await Color.findAll({
+  //   where: {id: 1},
+  //   attributes: ['id', 'num_colors'],
+  // });
+  // console.log(f[0].dataValues);
 
   // sync models to DB
   // await sequelize.sync({ force: true });

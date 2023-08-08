@@ -29,12 +29,6 @@ const colorsUsedModel = async (sequelize: Sequelize) => {
     youtube_src: {
       type: DataTypes.STRING,
     },
-    colors: {
-      type: DataTypes.STRING,
-    },
-    color_hex: {
-      type: DataTypes.STRING,
-    },
     Black_Gesso: {
       type: DataTypes.STRING,
     },
