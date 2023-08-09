@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
 
-const episodesModel = async (sequelize: Sequelize) => {
+export default async (sequelize: Sequelize) => {
   const Episode = await sequelize.define('Episode', {
     id: {
       type: DataTypes.INTEGER,
@@ -288,5 +288,3 @@ const episodesModel = async (sequelize: Sequelize) => {
 
   return Episode;
 };
-
-module.exports = episodesModel;

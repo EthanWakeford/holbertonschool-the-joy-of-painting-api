@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
 
-const colorsUsedModel = async (sequelize: Sequelize) => {
+export default async (sequelize: Sequelize) => {
   const Color = await sequelize.define('Color', {
     id: {
       type: DataTypes.INTEGER,
@@ -84,5 +84,3 @@ const colorsUsedModel = async (sequelize: Sequelize) => {
 
   return Color;
 };
-
-module.exports = colorsUsedModel;

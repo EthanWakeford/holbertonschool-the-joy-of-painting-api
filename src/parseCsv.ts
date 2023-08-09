@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { parse } = require('csv-parse');
 
-type headerTransformer = (header: Array<string>) => Array<string> | Array<string>;
+type headerTransformer =  ((header: Array<string>) => Array<string>) | Array<string>;
 
 /**
  * read file from path and parse into array of key, value pairs
@@ -9,7 +9,7 @@ type headerTransformer = (header: Array<string>) => Array<string> | Array<string
  * @headerTransformer {function | array}: transformer function to run on column names of CSV
  * Or array to feed directly as Column names
  */
-module.exports = async (path: string, headerTransformer: headerTransformer) => {
+export default async (path: string, headerTransformer: headerTransformer): Promise<Object[]> => {
   return new Promise((resolve) => {
     const csvData: Array<object> = [];
     fs.createReadStream(path, { encoding: 'utf8' })

@@ -1,19 +1,7 @@
 import { Sequelize, DataTypes } from 'sequelize';
-const episodeDateModel = require('./episodeDates');
 
-
-const subjectMatterModel = async (sequelize: Sequelize) => {
-  const Date = episodeDateModel(sequelize);
-
+export default async (sequelize: Sequelize) => {
   const Subject = await sequelize.define('Subject', {
-    dates_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Date,
-        key: 'id',
-      }
-    },
     episode: {
       type: DataTypes.STRING,
     },
@@ -225,5 +213,3 @@ const subjectMatterModel = async (sequelize: Sequelize) => {
 
   return Subject;
 };
-
-module.exports = subjectMatterModel;
