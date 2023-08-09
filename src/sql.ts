@@ -6,8 +6,6 @@ import episodesModel from './models/episodes';
 import parseCsv from './parseCsv';
 import 'dotenv/config';
 
-type GenericModel = typeof Model;
-
 export default async function loadDBFromCsv() {
   // connect to db
   const { database, username, password, host } = process.env;
