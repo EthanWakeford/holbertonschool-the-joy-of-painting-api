@@ -1,49 +1,11 @@
-import { Sequelize } from 'sequelize';
-import colorsUsedModel from './models/colorsUsed';
-import episodeDatesModel from './models/episodeDates';
-import subjectMatterModel from './models/subjectMatter';
-import episodesModel from './models/episodes';
+import { Model } from 'sequelize';
 import parseCsv from './parseCsv';
-import 'dotenv/config';
+import defineModels from './models/models';
 
 export default async function loadDBFromCsv() {
-  // connect to db
-  const { database, username, password, host } = process.env;
-  if ([database, username, password, host].some((item) => item === null)) {
-    throw new Error('Environment Variable cannot be found');
-  }
+  // define models
 
-  const sequelize = new Sequelize(database!, username!, password!, {
-    host: host!,
-    dialect: 'mysql',
-    logging: false,
-  });
-
-  // test connection
-  await sequelize.authenticate();
-  console.log('Connection has been established successfully.');
-
-  // create Color model
-  const Color = await colorsUsedModel(sequelize);
-
-  // create date model
-  const Date = await episodeDatesModel(sequelize);
-
-  // create subject model
-  const Subject = await subjectMatterModel(sequelize);
-
-  // create episode model
-  const Episode = await episodesModel(sequelize);
-
-  // associations
-  Color.hasOne(Date, { foreignKey: 'id' });
-  Date.belongsTo(Color, { foreignKey: 'id' });
-
-  Date.hasOne(Subject, { foreignKey: 'id' });
-  Subject.belongsTo(Date, { foreignKey: 'id' });
-
-  // sync models to DB
-  await sequelize.sync({ force: true });
+  const { Color, Date, Subject, Episode } = await defineModels();
 
   // load colors used into DB
   const colorData: Array<Object> = await parseCsv(
@@ -116,7 +78,7 @@ export default async function loadDBFromCsv() {
 
   // format all into array of objects to be placed into final table
   const episodes: Array<object> = [];
-  joinedData.forEach((data) => {
+  joinedData.forEach((data: any) => {
     // format subject table
     const subjectValues: any =
       data.dataValues.Date.dataValues.Subject.dataValues;

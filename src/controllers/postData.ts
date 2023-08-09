@@ -1,5 +1,5 @@
 export default class PostData {
-  f() {
+  static f() {
     console.log('g');
   }
 }

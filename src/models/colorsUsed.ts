@@ -1,6 +1,6 @@
-import { Sequelize, DataTypes } from 'sequelize';
+import { Sequelize, DataTypes, Model } from 'sequelize';
 
-export default async (sequelize: Sequelize) => {
+export default async (sequelize: Sequelize): Promise<any> => {
   const Color = await sequelize.define('Color', {
     id: {
       type: DataTypes.INTEGER,

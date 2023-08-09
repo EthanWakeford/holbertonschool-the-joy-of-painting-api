@@ -4,7 +4,7 @@ import PostData from "./src/controllers/postData";
 
 const routes = Router();
 
-routes.get('/episodes', GetData.g);
+routes.get('/episodes', GetData.episodes);
 routes.post('/episodes', PostData.f)
 
 export default routes;
