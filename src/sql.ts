@@ -94,7 +94,7 @@ export default async function loadDBFromCsv() {
   await Subject.bulkCreate(immutableSubjectData);
 
   // join tables into one final table
-  await Color.findAll({
+  const joinedData = await Color.findAll({
     attributes: { exclude: ['painting_title', 'createdAt', 'updatedAt'] },
     include: [
       {
@@ -112,37 +112,39 @@ export default async function loadDBFromCsv() {
         ],
       },
     ],
-  }).then((joinedData) => {
-    // format all into array of objects to be placed into final table
-    const episodes: Array<object> = [];
-    joinedData.forEach((data) => {
-      // format subject table
-      const subjectValues: any =
-        data.dataValues.Date.dataValues.Subject.dataValues;
-
-      // format date table
-      const dateValues: any = data.dataValues.Date.dataValues;
-      delete dateValues.Subject;
-
-      // format colors table
-      const colorValues: any = data.dataValues;
-      delete colorValues.Subject;
-      delete colorValues.Date;
-
-      // add all to array of episodes
-      episodes.push({
-        ...subjectValues,
-        ...dateValues,
-        ...colorValues,
-      });
-    });
-    const readOnlyEpisodes: Array<Readonly<Object>> = episodes;
-    console.log('creating episodes');
-    Episode.bulkCreate(readOnlyEpisodes);
-    console.log('episodes created');
   });
 
-  console.log('sql complete');
+  // format all into array of objects to be placed into final table
+  const episodes: Array<object> = [];
+  joinedData.forEach((data) => {
+    // format subject table
+    const subjectValues: any =
+      data.dataValues.Date.dataValues.Subject.dataValues;
+
+    // format date table
+    const dateValues: any = data.dataValues.Date.dataValues;
+    delete dateValues.Subject;
+
+    // format colors table
+    const colorValues: any = data.dataValues;
+    delete colorValues.Subject;
+    delete colorValues.Date;
+
+    // add all to array of episodes
+    episodes.push({
+      ...subjectValues,
+      ...dateValues,
+      ...colorValues,
+    });
+  });
+
+  // add all objects to final table
+  const readOnlyEpisodes: Array<Readonly<Object>> = episodes;
+  await Episode.bulkCreate(readOnlyEpisodes);
+
+  const episodeCount = await Episode.count();
+
+  console.log('sql complete!\nEpisode entries count: ', episodeCount);
 }
 
 // takes a date string and converts to YYYY-MM-DD format for mysql
