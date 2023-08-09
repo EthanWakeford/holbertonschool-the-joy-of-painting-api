@@ -1,4 +1,4 @@
-import { Sequelize, Model } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import colorsUsedModel from './models/colorsUsed';
 import episodeDatesModel from './models/episodeDates';
 import subjectMatterModel from './models/subjectMatter';
