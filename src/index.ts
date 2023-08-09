@@ -1,17 +1,21 @@
-import express, { Express, Request, Response } from 'express';
+import express from 'express';
 import loadDBFromCsv from './sql';
+import routes from '../routes';
 const app = express();
-const port = 3000;
+const port = process.env.port || 3000;
 
 // Load DB
-try {
-  loadDBFromCsv().then(() => {
+loadDBFromCsv()
+  // then start server
+  .then(() => {
     console.log('DB Loaded');
-    app.get('/', (req, res: Response) => res.send('Hello World!'));
-    app.listen(port, () =>
-      console.log(`Example app listening on port ${port}!`)
-    );
+
+    // use middleware and routes
+    app.use(express.json);
+    app.use('/', routes);
+
+    app.listen(port, () => console.log(`App listening on port ${port}!`));
+  })
+  .catch((err) => {
+    console.log(err);
   });
-} catch (err) {
-  console.log(err);
-}
