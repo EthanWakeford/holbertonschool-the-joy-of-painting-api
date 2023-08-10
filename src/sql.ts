@@ -1,11 +1,23 @@
-import { Model } from 'sequelize';
 import parseCsv from './parseCsv';
-import defineModels from './models/models';
+import Color from './models/colorsUsed';
+import AirDate from './models/episodeDates';
+import Subject from './models/subjectMatter';
+import Episode from './models/episodes';
+import sequelize, { testConnection } from './connect';
 
 export default async function loadDBFromCsv() {
-  // define models
+  // authenticate connection
+  testConnection();
 
-  const { Color, Date, Subject, Episode } = await defineModels();
+  // associate tables
+  Color.hasOne(AirDate, { foreignKey: 'id' });
+  AirDate.belongsTo(Color, { foreignKey: 'id' });
+
+  AirDate.hasOne(Subject, { foreignKey: 'id' });
+  Subject.belongsTo(AirDate, { foreignKey: 'id' });
+
+  // sync db
+  await sequelize.sync({ force: true });
 
   // load colors used into DB
   const colorData: Array<Object> = await parseCsv(
@@ -38,7 +50,7 @@ export default async function loadDBFromCsv() {
   });
 
   const immutableDateData: Array<Readonly<Object>> = dateData;
-  await Date.bulkCreate(immutableDateData);
+  await AirDate.bulkCreate(immutableDateData);
 
   // // load subjects into DB
   const subjectData = await parseCsv(
@@ -60,7 +72,7 @@ export default async function loadDBFromCsv() {
     attributes: { exclude: ['painting_title', 'createdAt', 'updatedAt'] },
     include: [
       {
-        model: Date,
+        model: AirDate,
         required: true,
         attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
         include: [
