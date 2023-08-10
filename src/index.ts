@@ -1,6 +1,6 @@
 import express from 'express';
 import loadDBFromCsv from './sql';
-import routes from '../routes';
+import routes from './routes';
 const app = express();
 const port = process.env.port || 3000;
 

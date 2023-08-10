@@ -1,6 +1,6 @@
 import { Router } from "express";
-import GetData from "./src/controllers/getdata";
-import PostData from "./src/controllers/postData";
+import GetData from "./controllers/getdata";
+import PostData from "./controllers/postData";
 
 const routes = Router();
 
