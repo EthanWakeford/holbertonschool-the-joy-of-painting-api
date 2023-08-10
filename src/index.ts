@@ -9,7 +9,9 @@ app.use('/', routes);
 
 async function startServer() {
   // load DB
-  await loadDBFromCsv();
+  if (process.env.build === 'true') {
+    await loadDBFromCsv();
+  }
 
   // then start server
   console.log('DB Loaded');
